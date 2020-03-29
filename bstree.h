@@ -135,6 +135,48 @@ public:
         return false;
     }
 
+    /**
+     * Inserisce un elemento nell'albero nella posizione opportuna.
+     * I confronti necessari sono eseguiti mediante il funtore di confronto.
+     * 
+     * @param value valore da inserire
+     * 
+     * @throw eccezione di allocazione di memoria
+    */
+    void add(const T& value){
+        node *tmp = new node(value);
+
+        if(_root == nullptr){
+            _root = tmp;
+            _size++;
+            return;
+        }
+
+        node *parent = _root;
+        node *curr = _root;
+        
+        while(curr != nullptr){
+
+            if(_eql(curr->value, value))
+                return;
+            
+            parent = curr;
+            if(_conf(curr->value, value))
+                curr = curr->left;
+            else
+                curr = curr->right;
+
+        }
+        
+        if(_conf(parent->value, value))
+            parent->left = tmp;
+        else
+            parent->right = tmp;
+        
+        _size++;
+
+    }
+
 };
 
 #endif
