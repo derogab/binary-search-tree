@@ -60,19 +60,29 @@ private:
 
     };
 
-    node *_root; // puntatore alla radice dell'albero    
+    node *_root; // puntatore alla radice dell'albero
+    unsigned int _size; // numero di nodi nell'albero 
 
 public:
     
     /**
      * Costruttore di default 
     */
-    binary_search_tree(): _root(nullptr) {}
+    binary_search_tree(): _root(nullptr), _size(0) {}
 
     /**
      * Distruttore
     */
     ~binary_search_tree(){}
+
+    /**
+     * Ritorna il numero di elementi nell'albero
+     * 
+     * @return numero di elementi presenti nell'albero
+    */
+    unsigned int size() const {
+        return _size;
+    }
 
 };
 
