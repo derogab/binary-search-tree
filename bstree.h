@@ -63,6 +63,21 @@ private:
     node *_root; // puntatore alla radice dell'albero
     unsigned int _size; // numero di nodi nell'albero 
 
+    /**
+     * Funzione helper per la rimozione ricorsiva dei nodi
+     * 
+     * @param n nodo da rimuovere
+    */
+    void clear_helper(node *n){
+        if(n != nullptr){
+            clear_helper(n->left);
+            clear_helper(n->right);
+            delete n;
+            _size--;
+            n = nullptr;
+        }
+    }
+
 public:
     
     /**
@@ -74,6 +89,14 @@ public:
      * Distruttore
     */
     ~binary_search_tree(){}
+
+    /**
+     * Cancella il contenuto dell'albero
+    */
+    void clear(){
+        clear_helper(_root);
+        _root = nullptr;
+    }
 
     /**
      * Ritorna il numero di elementi nell'albero
