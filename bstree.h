@@ -8,7 +8,7 @@
  * 
  * @param T tipo del dato
 */
-template <typename T>
+template <typename T, typename C, typename E>
 class binary_search_tree {
 
 private:
@@ -63,6 +63,9 @@ private:
     node *_root; // puntatore alla radice dell'albero
     unsigned int _size; // numero di nodi nell'albero 
 
+    C _conf; // oggetto funtore per il confronto
+    E _eql; // oggetto funtore per l'uguaglianza
+
     /**
      * Funzione helper per la rimozione ricorsiva dei nodi
      * 
@@ -105,6 +108,31 @@ public:
     */
     unsigned int size() const {
         return _size;
+    }
+
+    /**
+     * Determina se esiste un determinato elemento nell'albero.
+     * L'uguaglianza e il confronto sono definiti mediante i relativi funtori.
+     * 
+     * @param value valore da cercare
+     * 
+     * @return true se esiste l'elemento, false altrimenti
+    */
+    bool find(const T &value) const {
+        node *curr = _root;
+
+        while(curr != nullptr){
+
+            if(_eql(curr->value, value))
+                return true;
+            
+            if(_conf(curr-> value, value)) 
+                curr = curr->left;
+            else
+                curr = curr->right;
+
+        }
+        return false;
     }
 
 };
