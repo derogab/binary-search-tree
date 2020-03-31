@@ -75,6 +75,10 @@ int main(int argc, char const *argv[]) {
     // cerca stringhe
     std::cout << string_tree.find("abcde") << std::endl;
     std::cout << string_tree.find("abcdef") << std::endl;
+
+    // get size
+    std::cout << int_tree.size() << std::endl;
+    std::cout << string_tree.size() << std::endl;
     
     return 0;
 
