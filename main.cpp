@@ -49,6 +49,19 @@ struct compare_string {
 };
 
 /**
+ * Predicato di cofronto del valore con 3.
+ * La valutazione è fatta sul numero intero.
+ * Ritorna true se il valore è maggiore di 3.
+ * 
+ * @brief Predicato per il confronto dei valori.
+*/
+struct is_plus_than_3 {
+  bool operator()(int value) const {
+    return value > 3;
+  }
+};
+
+/**
  * Funzione MAIN con i vari test.
 */
 int main(int argc, char const *argv[]) {
@@ -124,6 +137,8 @@ int main(int argc, char const *argv[]) {
     std::cout << "int_subtree: " << int_subtree << std::endl;
     std::cout << "int_subtree.size(): " << int_subtree.size() << std::endl;
 
+    is_plus_than_3 ipt3;
+    printIF(int_subtree, ipt3);
     
     return 0;
 

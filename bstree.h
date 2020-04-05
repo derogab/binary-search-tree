@@ -1,6 +1,8 @@
 #ifndef BSTREE_H
 #define BSTREE_H
 
+#include <ostream>
+
 /**
  * Classe generica che implementa un albero binario di ricerca.
  * 
@@ -432,12 +434,12 @@ public:
 };
 
 template <typename T, typename C, typename E>
-std::ostream &operator<<(std::ostream &os, const binary_search_tree<T,C,E> &ol) {
+std::ostream &operator<<(std::ostream &os, const binary_search_tree<T,C,E> &bstree) {
 
     typename binary_search_tree<T,C,E>::const_iterator i,ie;
 
-    i = ol.begin();
-    ie = ol.end();
+    i = bstree.begin();
+    ie = bstree.end();
 
     while(i!=ie) {
         os << *i << " ";
@@ -445,6 +447,23 @@ std::ostream &operator<<(std::ostream &os, const binary_search_tree<T,C,E> &ol) 
     }
 
     return os;
+}
+
+template <typename T, typename C, typename E, typename P>
+void printIF(const binary_search_tree<T,C,E> &bstree, P pred) {
+
+    typename binary_search_tree<T,C,E>::const_iterator i,ie;
+
+	i = bstree.begin();
+	ie = bstree.end();
+	
+	while(i!=ie) {
+		if(pred(*i)) {
+			std::cout << *i << std::endl;
+		}
+		++i;
+	}
+
 }
 
 #endif
