@@ -77,12 +77,69 @@ private:
         }
     }
 
+    /**
+     * Funzione helper per la copia ricorsiva dei nodi
+     * 
+     * @param to_copy nodo da copiare
+     * @param parent padre del nodo copia 
+    */
+    node * copy_helper(node *to_copy, node *parent = nullptr){
+
+        if(to_copy == nullptr){
+            return nullptr;
+        }
+
+        node *copy = new node(to_copy->value);
+
+        copy->parent = parent;
+        copy->left  = copy_helper(to_copy->left, copy);
+        copy->right = copy_helper(to_copy->right, copy);
+
+        return copy;        
+    }
+
 public:
     
     /**
      * Costruttore di default 
     */
     binary_search_tree(): _root(nullptr), _size(0) {}
+
+    /**
+     * Costruttore di copia
+     * 
+     * @param other lista da copiare
+     * @throw eccezione di allocazione di memoria
+    */
+    binary_search_tree(const binary_search_tree &other) : _root(nullptr), _size(0) {
+
+        try {
+            _root = copy_helper(other._root);
+            _size = other._size;
+        }
+        catch(...) {
+            clear();
+            throw;
+        }
+
+    }
+
+    /**
+     * Operatore di assegnamento
+     * 
+     * @param other albero da copiare
+     * @return reference a this
+     * 
+     * @throw eccezione di allocazione di memoria
+    */
+    binary_search_tree &operator=(const binary_search_tree &other) {
+        if(this != &other) {
+            binary_search_tree tmp(other);
+            std::swap(_root,tmp._root);
+            std::swap(_size,tmp._size);
+        }
+        return *this;
+	}
 
     /**
      * Distruttore

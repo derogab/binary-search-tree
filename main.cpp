@@ -68,8 +68,8 @@ int main(int argc, char const *argv[]) {
     int_tree.add(8);
 
     // inserimenti stringhe
-    string_tree.add("a");
     string_tree.add("ab");
+    string_tree.add("a");
     string_tree.add("abc");
     string_tree.add("abcd");
     string_tree.add("abcde");
@@ -92,7 +92,32 @@ int main(int argc, char const *argv[]) {
 	i = int_tree.begin();
 	ie = int_tree.end();
 
-    std::cout << "values: " << int_tree << std::endl;
+    std::cout << "string_tree: " << string_tree << std::endl;
+
+    binary_search_tree<int, compare_int, equal_int> int_tree_copy(int_tree);
+    binary_search_tree<int, compare_int, equal_int> int_tree_pnt;
+
+    int_tree_pnt = int_tree;
+
+    std::cout << "int_tree: " << int_tree << std::endl;
+    std::cout << "int_tree_pnt: " << int_tree_pnt << std::endl;
+    std::cout << "int_tree_copy: " << int_tree_copy << std::endl;
+
+    int_tree.add(10);
+    int_tree.add(100);
+    int_tree_pnt.add(11);
+    int_tree_copy.add(12);
+    int_tree_copy.add(13);
+    int_tree_copy.add(14);
+    int_tree_copy.add(15);
+
+    std::cout << "int_tree: " << int_tree << std::endl;
+    std::cout << "int_tree_pnt: " << int_tree_pnt << std::endl;
+    std::cout << "int_tree_copy: " << int_tree_copy << std::endl;
+
+    std::cout << "int_tree.size(): " << int_tree.size() << std::endl;
+    std::cout << "int_tree_pnt.size(): " << int_tree_pnt.size() << std::endl;
+    std::cout << "int_tree_copy.size(): " << int_tree_copy.size() << std::endl;
     
     return 0;
 
