@@ -83,7 +83,7 @@ private:
      * @param to_copy nodo da copiare
      * @param parent padre del nodo copia 
     */
-    node * copy_helper(node *to_copy, node *parent = nullptr){
+    node * copy_helper(const node *to_copy, node *parent = nullptr){
 
         if(to_copy == nullptr){
             return nullptr;
@@ -98,6 +98,24 @@ private:
         return copy;        
     }
 
+    /**
+     * Funzione helper per la conta ricorsiva dei nodi
+     * 
+     * @param to_count nodo da usare come radice nella conta
+    */
+    int count_helper(const node *to_count){
+
+        if(to_count == nullptr){
+            return 0;
+        }
+        
+        int l = count_helper(to_count->left);
+        int r = count_helper(to_count->right);
+
+        return l + r + 1;
+
+    }
+
 public:
     
     /**
@@ -108,7 +126,7 @@ public:
     /**
      * Costruttore di copia
      * 
-     * @param other lista da copiare
+     * @param other albero da copiare
      * @throw eccezione di allocazione di memoria
     */
     binary_search_tree(const binary_search_tree &other) : _root(nullptr), _size(0) {
@@ -172,7 +190,7 @@ public:
      * @return true se esiste l'elemento, false altrimenti
     */
     bool find(const T &value) const {
-        node *curr = _root;
+        const node *curr = _root;
 
         while(curr != nullptr){
 
@@ -186,6 +204,39 @@ public:
 
         }
         return false;
+    }
+
+    /**
+     * Restituisce un determinato sottoalbero dell'albero principale.
+     * L'uguaglianza e il confronto sono definiti mediante i relativi funtori.
+     * 
+     * @param value valore che sarà radice del sottoalbero
+     * 
+     * @return il sottoalbero ricercato
+    */
+    binary_search_tree subtree(const T &value) {
+        node *curr = _root;
+        binary_search_tree<T,C,E> tmp;
+
+        while(curr != nullptr){
+
+            if(_eql(curr->value, value)){
+                
+                tmp._root = copy_helper(curr);
+                tmp._size = count_helper(curr);
+
+                return tmp;
+
+            }
+            
+            if(_conf(value, curr->value)) 
+                curr = curr->left;
+            else
+                curr = curr->right;
+
+        }
+
+        return tmp;
     }
 
     /**

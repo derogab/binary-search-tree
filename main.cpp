@@ -118,6 +118,12 @@ int main(int argc, char const *argv[]) {
     std::cout << "int_tree.size(): " << int_tree.size() << std::endl;
     std::cout << "int_tree_pnt.size(): " << int_tree_pnt.size() << std::endl;
     std::cout << "int_tree_copy.size(): " << int_tree_copy.size() << std::endl;
+
+    binary_search_tree<int, compare_int, equal_int> int_subtree = int_tree.subtree(4);
+
+    std::cout << "int_subtree: " << int_subtree << std::endl;
+    std::cout << "int_subtree.size(): " << int_subtree.size() << std::endl;
+
     
     return 0;
 
