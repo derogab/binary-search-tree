@@ -126,6 +126,11 @@ void test_metodi_fondamentali() {
 	bstree3 = bstree;	
 
 	std::cout << "stampa di bstree3" << std::endl << bstree3 << std::endl;
+
+	bstree.clear();
+	bstree2.clear();
+	bstree3.clear();
+
 }
 
 /**
@@ -202,6 +207,8 @@ void test_funtore_stringhe(void) {
 
 	//E' possibile usare le asserzioni per verificare dei test
 	//assert(str_tree.find("cip")==true);
+
+	str_tree.clear();
 }
 
 void test_tree_point(void) {
@@ -232,6 +239,7 @@ void test_tree_point(void) {
 	std::cout << "Ricerca di '(1,1)': " << point_tree.find(point(1,1)) << std::endl;
 	std::cout << "Ricerca di '(2,2)': " << point_tree.find(point(2,2)) << std::endl;
 
+	point_tree.clear();
 }
 
 /**
