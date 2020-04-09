@@ -2,6 +2,7 @@
 #define BSTREE_H
 
 #include <ostream>
+#include <cstddef>
 
 /**
  * Classe generica che implementa un albero binario di ricerca.
@@ -336,10 +337,10 @@ public:
 
     public:
         typedef std::forward_iterator_tag iterator_category;
-		typedef T                         value_type;
-		typedef ptrdiff_t                 difference_type;
-		typedef const T*                  pointer;
-		typedef const T&                  reference;
+        typedef T                         value_type;
+        typedef ptrdiff_t                 difference_type;
+        typedef const T*                  pointer;
+        typedef const T&                  reference;
 
         const_iterator() : _n(nullptr) {}
 
