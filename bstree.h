@@ -5,20 +5,20 @@
 #include <cstddef>
 
 /**
- * @brief tentativo di copia di un albero inesistente
+ * @brief Tentativo di copia dell'albero fallita.
  * 
- * @return eccezione
+ * @return Eccezione
  */
-class NoTreeToCopyException: public std::exception {
+class NoTreeCopiedException: public std::exception {
   virtual const char* what() const throw() {
-    return "nessun albero copiabile";
+    return "errore nella copia dell'albero";
   }
 };
 
 /**
- * @brief tentativo di creazione nodo fallito
+ * @brief Tentativo di creazione del nodo fallito
  * 
- * @return eccezione
+ * @return Eccezione
  */
 class NoNodeCreatedException: public std::exception {
   virtual const char* what() const throw() {
@@ -32,6 +32,8 @@ class NoNodeCreatedException: public std::exception {
  * @brief Albero binario di ricerca
  * 
  * @param T tipo del dato
+ * @param C funtore di comparazione
+ * @param E funtore di uguaglianza
 */
 template <typename T, typename C, typename E>
 class binary_search_tree {
@@ -57,12 +59,14 @@ private:
 
         /**
          * Costruttore secondario che inizializza il nodo
+         * 
          * @param v valore del dato
         */
         node(const T &v): value(v), parent(nullptr), left(nullptr), right(nullptr) {}
         
         /**
          * Costruttore secondario che inizializza il nodo
+         * 
          * @param v valore del dato
          * @param p puntatore al padre
          * @param n1 puntatore al figlio sinistro
@@ -107,6 +111,8 @@ private:
      * 
      * @param to_copy nodo da copiare
      * @param parent padre del nodo copia 
+     * 
+     * @throw eccezione sulla creazione del nodo
     */
     node * copy_helper(const node *to_copy, node *parent = nullptr){
 
@@ -158,6 +164,7 @@ public:
      * Costruttore di copia
      * 
      * @param other albero da copiare
+     * 
      * @throw eccezione di copiatura dell'albero
     */
     binary_search_tree(const binary_search_tree &other) : _root(nullptr), _size(0) {
@@ -168,7 +175,7 @@ public:
         }
         catch(...) {
             clear();
-            throw NoTreeToCopyException();
+            throw NoTreeCopiedException();
         }
 
     }
@@ -177,6 +184,7 @@ public:
      * Operatore di assegnamento
      * 
      * @param other albero da copiare
+     * 
      * @return reference a this
      * 
      * @throw eccezione di allocazione di memoria
@@ -246,6 +254,8 @@ public:
      * @param value valore che sarà radice del sottoalbero
      * 
      * @return il sottoalbero ricercato
+     * 
+     * @throw eccezione di copiatura dell'albero
     */
     binary_search_tree subtree(const T &value) {
         node *curr = _root;
@@ -261,7 +271,7 @@ public:
                 }
                 catch(...){
                     tmp.clear();
-                    throw NoTreeToCopyException();
+                    throw NoTreeCopiedException();
                 }
 
                 return tmp;
@@ -284,7 +294,7 @@ public:
      * 
      * @param value valore da inserire
      * 
-     * @throw eccezione di allocazione di memoria
+     * @throw eccezione sulla creazione del nodo
     */
     void add(const T& value){
         
@@ -334,19 +344,20 @@ public:
     /**
      * Iteratore costante dell'albero
      * 
-     * @brief Iteratore costante della lista 
+     * @brief Iteratore costante dell'albero 
     */
     class const_iterator{
 
     private:
         const node *_n;
 
-        // La classe container deve essere messa friend dell'iteratore per poter
-        // usare il costruttore di inizializzazione.
         friend class binary_search_tree; 
-
-        // Costruttore privato di inizializzazione usato dalla classe container
-        // tipicamente nei metodi begin e end
+ 
+        /**
+         * Costruttore privato di inizializzazione 
+         * 
+         * Usato dalla classe container tipicamente nei metodi begin e end
+        */
         const_iterator(const node *n) : _n(n) { }
 
         /**
@@ -398,17 +409,23 @@ public:
 
         ~const_iterator() {}
 
-        // Ritorna il dato riferito dall'iteratore (dereferenziamento) 
+        /**
+         * Ritorna il dato riferito dall'iteratore (dereferenziamento)
+        */ 
         reference operator*() const {
             return _n->value;
         }
 
-        // Ritorna il puntatore al dato riferito dall'iteratore
+        /**
+         * Ritorna il puntatore al dato riferito dall'iteratore
+        */
         pointer operator->() const {
             return &(_n->value);
         }
 
-        // Operatore di iterazione post-incremento
+        /**
+         * Operatore di iterazione post-incremento
+        */
         const_iterator operator++(int) {
 			const_iterator tmp(*this);
 			
@@ -418,7 +435,9 @@ public:
 
         }
 
-        // Operatore di iterazione pre-incremento
+        /**
+         * Operatore di iterazione pre-incremento
+        */
         const_iterator& operator++() {
             
             _n = get_next(_n);
@@ -427,12 +446,16 @@ public:
 
         }
 
-        // Uguaglianza
+        /**
+         * Uguaglianza
+        */
         bool operator==(const const_iterator &other) const {
             return (_n == other._n);
         }
 
-        // Diversità
+        /**
+         * Diversità
+        */
         bool operator!=(const const_iterator &other) const {
             return (_n != other._n);
         }
@@ -459,6 +482,11 @@ public:
         return const_iterator(curr);
     }
 
+    /**
+     * Ritorna l'iteratore alla fine della sequenza dati
+     * 
+     * @return iteratore alla fine della sequenza
+    */
     const_iterator end() const {
         return const_iterator(nullptr);
 
@@ -479,6 +507,17 @@ public:
 
 };
 
+/**
+ * Overload dell'operatore di stream << per un binary_search_tree
+ * 
+ * @brief Operatore <<
+ * 
+ * @param T tipo del dato
+ * @param C funtore di comparazione
+ * @param E funtore di uguaglianza
+ * 
+ * @return puntatore allo stream
+*/
 template <typename T, typename C, typename E>
 std::ostream &operator<<(std::ostream &os, const binary_search_tree<T,C,E> &bstree) {
 
@@ -495,6 +534,19 @@ std::ostream &operator<<(std::ostream &os, const binary_search_tree<T,C,E> &bstr
     return os;
 }
 
+/**
+ * Funzione globale printIF.
+ * Stampa a schermo l'elenco dei valori dell'albero che soddisfano un predicato.
+ * 
+ * @brief Stampa i valori dell'albero che soddisfano un predicato.
+ * 
+ * @param T tipo del dato
+ * @param C funtore di comparazione
+ * @param E funtore di uguaglianza
+ * @param P funtore del predicato 
+ * @param bstree albero di tipo T
+ * @param pred predicato
+*/
 template <typename T, typename C, typename E, typename P>
 void printIF(const binary_search_tree<T,C,E> &bstree, P pred) {
 
