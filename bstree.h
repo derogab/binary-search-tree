@@ -5,6 +5,28 @@
 #include <cstddef>
 
 /**
+ * @brief tentativo di copia di un albero inesistente
+ * 
+ * @return eccezione
+ */
+class NoTreeToCopyException: public std::exception {
+  virtual const char* what() const throw() {
+    return "nessun albero copiabile";
+  }
+};
+
+/**
+ * @brief tentativo di creazione nodo fallito
+ * 
+ * @return eccezione
+ */
+class NoNodeCreatedException: public std::exception {
+  virtual const char* what() const throw() {
+    return "errore nella creazione del nodo";
+  }
+};
+
+/**
  * Classe generica che implementa un albero binario di ricerca.
  * 
  * @brief Albero binario di ricerca
@@ -91,9 +113,15 @@ private:
         if(to_copy == nullptr){
             return nullptr;
         }
-
-        node *copy = new node(to_copy->value);
-
+        
+        node *copy;
+        try{
+            copy = new node(to_copy->value);
+        }
+        catch(...){
+            throw NoNodeCreatedException();
+        }
+              
         copy->parent = parent;
         copy->left  = copy_helper(to_copy->left, copy);
         copy->right = copy_helper(to_copy->right, copy);
@@ -130,7 +158,7 @@ public:
      * Costruttore di copia
      * 
      * @param other albero da copiare
-     * @throw eccezione di allocazione di memoria
+     * @throw eccezione di copiatura dell'albero
     */
     binary_search_tree(const binary_search_tree &other) : _root(nullptr), _size(0) {
 
@@ -140,7 +168,7 @@ public:
         }
         catch(...) {
             clear();
-            throw;
+            throw NoTreeToCopyException();
         }
 
     }
@@ -226,9 +254,15 @@ public:
         while(curr != nullptr){
 
             if(_eql(curr->value, value)){
-                
-                tmp._root = copy_helper(curr);
-                tmp._size = count_helper(curr);
+
+                try{
+                    tmp._root = copy_helper(curr);
+                    tmp._size = count_helper(curr);
+                }
+                catch(...){
+                    tmp.clear();
+                    throw NoTreeToCopyException();
+                }
 
                 return tmp;
 
@@ -253,7 +287,14 @@ public:
      * @throw eccezione di allocazione di memoria
     */
     void add(const T& value){
-        node *tmp = new node(value);
+        
+        node *tmp;
+        try{
+            tmp = new node(value);
+        }
+        catch(...){
+            throw NoNodeCreatedException();
+        }
 
         if(_root == nullptr){
             _root = tmp;
