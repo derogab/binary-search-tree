@@ -2,7 +2,9 @@
 #define BSTREE_H
 
 #include <ostream>
-#include <cstddef>
+#include <iterator> // std::forward_iterator_tag
+#include <cstddef>  // std::ptrdiff_t
+#include <iostream>
 
 /**
  * @brief Tentativo di copia dell'albero fallita.
@@ -114,7 +116,7 @@ private:
      * 
      * @throw eccezione sulla creazione del nodo
     */
-    node * copy_helper(const node *to_copy, node *parent = nullptr){
+    node * copy_helper(const node *to_copy, node *parent = nullptr) const{
 
         if(to_copy == nullptr){
             return nullptr;
@@ -140,7 +142,7 @@ private:
      * 
      * @param to_count nodo da usare come radice nella conta
     */
-    int count_helper(const node *to_count){
+    int count_helper(const node *to_count) const{
 
         if(to_count == nullptr){
             return 0;
@@ -257,7 +259,7 @@ public:
      * 
      * @throw eccezione di copiatura dell'albero
     */
-    binary_search_tree subtree(const T &value) {
+    binary_search_tree subtree(const T &value) const {
         node *curr = _root;
         binary_search_tree<T,C,E> tmp;
 
