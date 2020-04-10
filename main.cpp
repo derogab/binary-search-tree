@@ -1,7 +1,6 @@
 #include <iostream>
 #include "bstree.h"
 
-
 /**
  * Struct point che implementa un punto 2D.
  * 
@@ -106,6 +105,19 @@ struct is_plus_than_3 {
     }
 };
 
+/**
+ * Predicato di cofronto parità del valore.
+ * La valutazione è fatta sul numero intero.
+ * Ritorna true se il valore è pari, false altrimenti.
+ * 
+ * @brief Predicato per il confronto parità del valore
+*/
+struct is_even {
+    bool operator()(int value) const {
+        return value % 2 == 0;
+    }
+};
+
 void test_metodi_fondamentali() {
     std::cout << "******** Test sui metodi fondamentali ********" << std::endl;
 
@@ -130,6 +142,112 @@ void test_metodi_fondamentali() {
 	bstree.clear();
 	bstree2.clear();
 	bstree3.clear();
+
+}
+
+
+void test_uso() {
+    std::cout << "******** Test sull'uso ********" << std::endl;
+
+	binary_search_tree<int, compare_int, equal_int> int_bstree;
+	binary_search_tree<std::string, compare_string, equal_string> string_bstree;
+	binary_search_tree<point, compare_point, equal_point> point_bstree;
+
+	// Funzione di inserimento
+
+	int_bstree.add(1);
+	int_bstree.add(2);
+	int_bstree.add(0);
+	int_bstree.add(1);
+	int_bstree.add(3);
+	int_bstree.add(78);
+	int_bstree.add(4);
+	int_bstree.add(104);
+	int_bstree.add(45);
+
+	string_bstree.add("aaa");
+	string_bstree.add("bbbb");
+	string_bstree.add("c");
+	string_bstree.add("dd");
+
+	point_bstree.add(point(1,1));
+	point_bstree.add(point(1,2));
+	point_bstree.add(point(2,7));
+	point_bstree.add(point(0,0));
+	point_bstree.add(point(5,4));
+	
+	std::cout << "stampa di int_bstree dopo inserimenti" << std::endl << int_bstree << std::endl;
+	std::cout << "stampa di string_bstree dopo inserimenti" << std::endl << string_bstree << std::endl;
+	std::cout << "stampa di point_bstree dopo inserimenti" << std::endl << point_bstree << std::endl;
+
+	// Iteratore
+	typename binary_search_tree<int, compare_int, equal_int>::const_iterator i1,ie1;
+
+	i1 = int_bstree.begin();
+	ie1 = int_bstree.end();
+
+	std::cout << "ristampa di int_bstree con iteratore" << std::endl;
+	while(i1!=ie1) {
+		std::cout << *i1 << " ";
+		++i1;
+	}
+	std::cout << std::endl;
+
+	typename binary_search_tree<std::string, compare_string, equal_string>::const_iterator i2,ie2;
+
+	i2 = string_bstree.begin();
+	ie2 = string_bstree.end();
+
+	std::cout << "ristampa di string_bstree con iteratore" << std::endl;
+	while(i2!=ie2) {
+		std::cout << *i2 << " ";
+		++i2;
+	}
+	std::cout << std::endl;
+
+	typename binary_search_tree<point, compare_point, equal_point>::const_iterator i3,ie3;
+
+	i3 = point_bstree.begin();
+	ie3 = point_bstree.end();
+
+	std::cout << "ristampa di point_bstree con iteratore" << std::endl;
+	while(i3!=ie3) {
+		std::cout << *i3 << " ";
+		++i3;
+	}
+	std::cout << std::endl;
+	
+	// Funzione di sottoalbero
+	binary_search_tree<int, compare_int, equal_int> int_subbstree = int_bstree.subtree(78);
+	std::cout << "stampa di int_subbstree = bstree.subtree(78)" << std::endl << int_subbstree << std::endl;
+
+	binary_search_tree<std::string, compare_string, equal_string> string_subbstree = string_bstree.subtree("dd");
+	std::cout << "stampa di string_subbstree = bstree.subtree(78)" << std::endl << string_subbstree << std::endl;
+
+	binary_search_tree<point, compare_point, equal_point> point_subbstree = point_bstree.subtree(point(1,2));
+	std::cout << "stampa di point_subbstree = bstree.subtree(78)" << std::endl << point_subbstree << std::endl;
+
+	// Funzione globale printIF
+	std::cout << "ristampa di int_bstree completo" << std::endl << int_bstree << std::endl;
+
+	is_plus_than_3 ipt3;
+	
+	std::cout << "stampa elenco di valori in int_bstree che rispettano predicato is_plus_than_3" << std::endl;
+	printIF<int, compare_int, equal_int, is_plus_than_3>(int_bstree, ipt3);
+
+	is_even even;
+	
+	std::cout << "stampa elenco di valori in int_bstree che rispettano predicato is_even" << std::endl;
+	printIF<int, compare_int, equal_int, is_even>(int_bstree, even);
+
+
+	// Pulizia
+	int_bstree.clear();
+	string_bstree.clear();
+	point_bstree.clear();	
+	int_subbstree.clear();
+	string_subbstree.clear();
+	point_subbstree.clear();
 
 }
 
@@ -205,9 +323,6 @@ void test_funtore_stringhe(void) {
 	std::cout << "Ricerca di 'cip': " << str_tree.find("cip") << std::endl;
 	std::cout << "Ricerca di 'cipp': " << str_tree.find("cipp") << std::endl;
 
-	//E' possibile usare le asserzioni per verificare dei test
-	//assert(str_tree.find("cip")==true);
-
 	str_tree.clear();
 }
 
@@ -256,6 +371,10 @@ int main(int argc, char const *argv[]) {
     test_const_tree_int(int_test_tree);
     test_funtore_stringhe();
     test_tree_point();
+	test_uso();
+
+	// pulizia
+	int_test_tree.clear();
 
     return 0;
 
