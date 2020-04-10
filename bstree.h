@@ -266,8 +266,10 @@ public:
         
         while(curr != nullptr){
 
-            if(_eql(curr->value, value))
+            if(_eql(curr->value, value)){
+                delete tmp;
                 return;
+            }
             
             prec = curr;
             if(_conf(value, curr->value))
