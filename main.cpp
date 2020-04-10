@@ -1,5 +1,6 @@
 #include <iostream>
 #include "bstree.h"
+#include <cassert> // assert
 
 /**
  * Struct point che implementa un punto 2D.
@@ -118,6 +119,9 @@ struct is_even {
     }
 };
 
+/**
+ * Test dei metodi fondamentali
+*/
 void test_metodi_fondamentali() {
     std::cout << "******** Test sui metodi fondamentali ********" << std::endl;
 
@@ -145,7 +149,9 @@ void test_metodi_fondamentali() {
 
 }
 
-
+/**
+ * Test sull'uso dei metodi implementati
+*/
 void test_uso() {
     std::cout << "******** Test sull'uso ********" << std::endl;
 
@@ -154,7 +160,6 @@ void test_uso() {
 	binary_search_tree<point, compare_point, equal_point> point_bstree;
 
 	// Funzione di inserimento
-
 	int_bstree.add(1);
 	int_bstree.add(2);
 	int_bstree.add(0);
@@ -176,6 +181,7 @@ void test_uso() {
 	point_bstree.add(point(0,0));
 	point_bstree.add(point(5,4));
 	
+	// stampa degli alberi
 	std::cout << "stampa di int_bstree dopo inserimenti" << std::endl << int_bstree << std::endl;
 	std::cout << "stampa di string_bstree dopo inserimenti" << std::endl << string_bstree << std::endl;
 	std::cout << "stampa di point_bstree dopo inserimenti" << std::endl << point_bstree << std::endl;
@@ -217,6 +223,16 @@ void test_uso() {
 	}
 	std::cout << std::endl;
 	
+	// Funzione di ricerca
+	assert(int_bstree.find(78) == true);
+	assert(int_bstree.find(79) == false);
+
+	assert(string_bstree.find("aaa") == true);
+	assert(string_bstree.find("eee") == false);
+
+	assert(point_bstree.find(point(1,2)) == true);
+	assert(point_bstree.find(point(3,4)) == false);
+
 	// Funzione di sottoalbero
 	binary_search_tree<int, compare_int, equal_int> int_subbstree = int_bstree.subtree(78);
 	std::cout << "stampa di int_subbstree = bstree.subtree(78)" << std::endl << int_subbstree << std::endl;
@@ -284,6 +300,9 @@ void test_tree_int(binary_search_tree<int, compare_int, equal_int> &other) {
     std::cout << "Dimensione dell'albero dopo clear(): " << other.size() << std::endl;
 }
 
+/**
+ * Test sull'albero costante di interi
+*/
 void test_const_tree_int(const binary_search_tree<int, compare_int, equal_int> &other) {
     std::cout << "******** Test sull'albero costante di interi ********" << std::endl;
 
@@ -304,6 +323,9 @@ void test_const_tree_int(const binary_search_tree<int, compare_int, equal_int> &
     // clear non è chiamabile su un oggetto const
 }
 
+/**
+ * Test sull'albero di stringhe
+*/
 void test_funtore_stringhe(void) {
 	std::cout << "******** Test sull'albero di stringhe ********" << std::endl;
 
@@ -326,6 +348,9 @@ void test_funtore_stringhe(void) {
 	str_tree.clear();
 }
 
+/**
+ * Test sull'albero di punti
+*/
 void test_tree_point(void) {
 
 	binary_search_tree<point, compare_point, equal_point> point_tree;
