@@ -165,7 +165,9 @@ public:
     /**
      * Distruttore
     */
-    ~binary_search_tree(){}
+    ~binary_search_tree(){
+        clear();
+    }
 
     /**
      * Cancella il contenuto dell'albero
