@@ -16,7 +16,7 @@ Oltre ai metodi fondamentali, la classe deve permettere:
 e di tipo _forward_. L'ordine con il quale sono ritornati i dati non è
 rilevante.
 4. Di stampare il contenuto dell'albero (anche usando `operator<<`).
-5. Implementare inoltre un metodo `subtree` che, passato un dato d dello
+5. Implementare inoltre un metodo `subtree` che, passato un dato `d` dello
 stesso tipo del dato contenuto nell'albero, ritorna un nuovo albero. Il
 nuovo albero deve corrispondere al sottoalbero avente come radice il
 nodo con il valore `d`. Ad esempio l'esecuzione di `B=A.subtree(8)`
